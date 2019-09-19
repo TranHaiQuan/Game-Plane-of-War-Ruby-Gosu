@@ -15,6 +15,11 @@ class GameManager < Gosu::Window
 
     @star_anim = Gosu::Image.load_tiles("images/Plane/star.png", 25, 25)
     @stars = Array.new
+    @font = Gosu::Font.new(20)
+
+    # Gosu::Song to play background sound
+    @bg_sound = Gosu::Song.new("sounds/bg_sound.mp3")
+    @bg_sound.play(true)
   end
 
   def update
@@ -44,6 +49,7 @@ class GameManager < Gosu::Window
     @backgroud_image.draw(0, 0, 0)
     @player.draw
     @stars.each(&:draw)
+    @font.draw("SCORE: #{@player.score}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
   end
 
   def button_down id

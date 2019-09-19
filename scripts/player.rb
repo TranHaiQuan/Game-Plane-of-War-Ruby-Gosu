@@ -2,6 +2,9 @@ class Player
   def initialize
     @flying_anim = init_animation_for "Fly", 2
     @player = Gosu::Image.new("images/Plane/Fly_1.png", :tileable => true)
+
+    # Gosu::Sample to play effect sound
+    @beep_audio = Gosu::Sample.new("sounds/beep.wav")
     @x = @y = @vel_x = @vel_y = @angle = 0.0
     @score = 0
   end
@@ -22,12 +25,12 @@ class Player
   end
 
   def up
-    puts "accelerating ..."
+    puts "up ..."
     @vel_y += Gosu.offset_y(0, 0.5)
   end
 
   def down
-    puts "accelerating ..."
+    puts "down ..."
     @vel_y -= Gosu.offset_y(0, 0.5)
   end
 
@@ -56,7 +59,12 @@ class Player
   end
 
   def collect_stars stars
-    stars.reject!{|star| Gosu.distance(@x, @y, star.x, star.y) < 35}
+    stars.reject! do |star|
+      next false if Gosu.distance(@x, @y, star.x, star.y) >= 35
+      @score += 10
+      @beep_audio.play
+      true
+    end
   end
 
   def draw
