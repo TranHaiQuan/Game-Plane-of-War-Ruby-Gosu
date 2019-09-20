@@ -1,12 +1,16 @@
+require "./scripts/bullet"
+
 class Player
   def initialize
     @flying_anim = init_animation_for "Fly", 2
+    @shoot_anim = init_animation_for "Shoot", 5
     @player = Gosu::Image.new("images/Plane/Fly_1.png", :tileable => true)
 
     # Gosu::Sample to play effect sound
     @beep_audio = Gosu::Sample.new("sounds/beep.wav")
     @x = @y = @vel_x = @vel_y = @angle = 0.0
     @score = 0
+    @bullets = Array.new
   end
 
   def wrap x, y
@@ -67,9 +71,14 @@ class Player
     end
   end
 
+  def shoot
+    @bullets.push(Bullet.new(@x, @y))
+  end
+
   def draw
     @player = @flying_anim[Gosu.milliseconds / 100 % @flying_anim.size]
     @player.draw_rot(@x, @y, 1, @angle)
+    @bullets.each(&:draw)
   end
 
   private
