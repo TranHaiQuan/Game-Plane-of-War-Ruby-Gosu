@@ -1,3 +1,3 @@
 module ZOrder
-  BG, STARS, PLAYER, UI = *0..3
+  BG, STARS, PLAYER, BULLET, UI = *0..4
 end

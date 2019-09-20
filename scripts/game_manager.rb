@@ -20,9 +20,16 @@ class GameManager < Gosu::Window
     # Gosu::Song to play background sound
     @bg_sound = Gosu::Song.new("sounds/bg_sound.mp3")
     @bg_sound.play(true)
+    @is_shooted = false
   end
 
   def update
+    if Gosu.button_down?(Gosu::KB_SPACE)
+      puts "shotting"
+      @player.shoot
+      @is_shooted = true
+    end
+
     if Gosu.button_down?(Gosu::KB_LEFT) || Gosu::button_down?(Gosu::GP_LEFT)
       @player.back
     end
@@ -53,6 +60,11 @@ class GameManager < Gosu::Window
   end
 
   def button_down id
+    return close if id == Gosu::KB_ESCAPE
+    super
+  end
+
+  def button_up id
     return close if id == Gosu::KB_ESCAPE
     super
   end
